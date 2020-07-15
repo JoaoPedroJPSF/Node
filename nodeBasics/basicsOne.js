@@ -1,53 +1,7 @@
 const http = require('http')
-const fs = require('fs')
 
-const server = http.createServer((req, res) => {
+const routes = require('./routes')
 
-  const url = req.url
-  const method = req.method
+const server = http.createServer(routes)
 
-  if (url === '/'){
-
-    res.setHeader('Content-Type', 'text/html')
-    res.write('<html>')
-    res.write('<body>')
-    res.write('<form action="/message" method="POST"> <input type="text" name="message"><button type="submit">submit</button></form>')
-    res.write('</body>')
-    res.write('</html>')
-
-    return res.end()
-  }
-
-  if (url === '/message' && method === 'POST'){
-
-    const body = []
-
-    req.on('data', (chunk) => {
-      body.push(chunk)
-      console.log(body)
-    })
-
-    req.on('end', () => {
-      const parsedBody = Buffer.concat(body).toString()
-      console.log(parsedBody)
-      const message = parsedBody.split('=')[1]
-      fs.writeFileSync('message.txt', message)
-    })
-
-    res.statusCode = 302
-    res.setHeader('Location', '/')
-    return res.end()
-
-  }
-
-  res.setHeader('Content-Type', 'text/html')
-  res.write('<html>')
-  res.write('<body>')
-  res.write('<h1>Geting back</h1>')
-  res.write('</body>')
-  res.write('</html>')
-  console.log()
-
-})
-
-server.listen(3000)
+server.listen(3333, console.log('Connected'))

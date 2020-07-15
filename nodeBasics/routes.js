@@ -13,10 +13,12 @@ if (url === '/'){
   res.write('</body>')
   res.write('</html>')
 
+  console.log('Root reached')
   return res.end()
 }
 
 if (url === '/message' && method === 'POST'){
+  console.log('Post request reached')
 
   const body = []
 

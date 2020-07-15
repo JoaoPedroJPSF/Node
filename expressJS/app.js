@@ -1,4 +1,10 @@
+  const path = require('path')
+
   const express = require('express')
+
+  const adminRoutes = require('./routes/admin')
+
+  const shopRoutes = require('./routes/shop')
 
   const bodyParser = require('body-parser')
 
@@ -8,20 +14,13 @@
 
   app.use(bodyParser.urlencoded({extended: false}))
 
-  app.get('/add-products', (req, res) => {
-    res.send('<form action="/products" method="POST"><input type="text" name="title"> <button type="submit">Add Product</form>')
+  app.use(adminRoutes) // All routes with /admin will respond to this settings
+
+  app.use(shopRoutes)
+
+  app.use((req, res, next) => {
+    res.status(404).sendFile(path.join(__dirname, './', 'views', 'page-not-found.html'))
+    console.log('404 error')
   })
-
-  app.post('/products', (req, res) => {
-    console.log(req.body)
-    res.redirect('/')
-  })
-
-  app.get('/', (req, res, next) => {
-    res.send('Root page')
-    // next() Allows middleware to continue to the next middleware
-  })
-
-
 
   app.listen(3333, console.log('Connected'))

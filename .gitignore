@@ -3,3 +3,7 @@ nodebasics/.git
 .git
 
 message.txt
+
+node_modules
+
+yarn.lock
